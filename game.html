@@ -1,75 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Coin Toss</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    .coin {
-      font-size: 100px;
-      margin: 20px 0;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      cursor: pointer;
-      border: none;
-      background-color: #4caf50;
-      color: white;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .results {
-      margin-top: 20px;
-      font-size: 20px;
-    }
-    .results span {
-      font-weight: bold;
-      color: #4caf50;
-    }
-  </style>
-</head>
-<body>
-  <h1>Coin Toss Game</h1>
-  <div class="coin" id="coin">🪙</div>
-  <button onclick="tossCoin()">Toss Coin</button>
-  <div class="results">
-    <p>Heads: <span id="headsCount">0</span></p>
-    <p>Tails: <span id="tailsCount">0</span></p>
-  </div>
-
-  <script>
-    let headsCount = 0;
-    let tailsCount = 0;
-
-    function tossCoin() {
-      // Generate random outcome (0 or 1)
-      const outcome = Math.random() < 0.5 ? 'Heads' : 'Tails';
-
-      // Update the display based on the outcome
-      const coinDisplay = document.getElementById('coin');
-      if (outcome === 'Heads') {
-        coinDisplay.textContent = '🙂'; // Emoji for Heads
-        headsCount++;
-      } else {
-        coinDisplay.textContent = '😄'; // Emoji for Tails
-        tailsCount++;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Coin Toss</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        background-color: #f4f4f9;
+        color: #333;
       }
+      .coin {
+        font-size: 100px;
+        margin: 20px 0;
+        display: inline-block;
+        transition: transform 0.3s ease-out;
+      }
+      @keyframes flip {
+        0% {
+          transform: rotateY(0);
+        }
+        100% {
+          transform: rotateY(1800deg);
+        }
+      }
+      .animate {
+        animation: flip 2s ease-out;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+      .results {
+        margin-top: 20px;
+        font-size: 20px;
+      }
+      .results span {
+        font-weight: bold;
+        color: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Coin Toss Game</h1>
+    <div class="coin" id="coin">🪙</div>
+    <button onclick="tossCoin()" id="tossButton">Toss Coin</button>
+    <div class="results">
+      <p>Heads: <span id="headsCount">0</span></p>
+      <p>Tails: <span id="tailsCount">0</span></p>
+    </div>
 
-      // Update the counts
-      document.getElementById('headsCount').textContent = headsCount;
-      document.getElementById('tailsCount').textContent = tailsCount;
-    }
-  </script>
-</body>
+    <script>
+      let headsCount = 0;
+      let tailsCount = 0;
+      const coin = document.getElementById("coin");
+      const tossButton = document.getElementById("tossButton");
+
+      function tossCoin() {
+        // Disable the button during animation
+        tossButton.disabled = true;
+
+        // Start the flip animation
+        coin.classList.add("animate");
+
+        // Generate random outcome (0 or 1)
+        const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
+
+        // Wait for the animation to finish before updating the result
+        setTimeout(() => {
+          // Update the display based on the outcome
+          if (outcome === "Heads") {
+            coin.textContent = "🙂"; // Emoji for Heads
+            headsCount++;
+          } else {
+            coin.textContent = "😄"; // Emoji for Tails
+            tailsCount++;
+          }
+
+          // Update the counts
+          document.getElementById("headsCount").textContent = headsCount;
+          document.getElementById("tailsCount").textContent = tailsCount;
+
+          // Remove the animation class
+          coin.classList.remove("animate");
+
+          // Re-enable the button
+          tossButton.disabled = false;
+        }, 2000); // This should match the animation duration
+      }
+    </script>
+  </body>
 </html>
